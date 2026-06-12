@@ -5,7 +5,6 @@ import {
   Package,
   Layers,
   Scale,
-  AlertTriangle,
   Truck,
   FileText
 } from "lucide-react";
@@ -75,7 +74,8 @@ export default function PackingListPlanDetails() {
         </div>
 
         {/* Warnings Section (if any) */}
-        {summary.warnings && summary.warnings.length > 0 && (
+        {/*
+        summary.warnings && summary.warnings.length > 0 && (
           <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl shadow-xs">
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
@@ -89,7 +89,8 @@ export default function PackingListPlanDetails() {
               </div>
             </div>
           </div>
-        )}
+        )
+        */}
 
         {/* Main Summary Info Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
