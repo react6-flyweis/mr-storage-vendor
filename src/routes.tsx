@@ -5,6 +5,7 @@ import { NotFound } from "@/pages/not-found";
 const VendorUpload = lazy(() => import("@/pages/VendorUpload"));
 const CarrierBid = lazy(() => import("@/pages/CarrierBid"));
 const BundleDetails = lazy(() => import("@/pages/BundleDetails"));
+const PackingListPlanDetails = lazy(() => import("@/pages/PackingListPlanDetails"));
 
 export const routes: RouteObject[] = [
   {
@@ -18,6 +19,10 @@ export const routes: RouteObject[] = [
   {
     path: "/bundle/:bundleId",
     element: <BundleDetails />,
+  },
+  {
+    path: "/packing-list-plan/:packingListPlanId",
+    element: <PackingListPlanDetails />,
   },
   {
     path: "*",
