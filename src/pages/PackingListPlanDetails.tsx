@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetPackingListPlanDetailsQuery } from "@/redux/api/packingListPlanApi";
+import { useGetPackingListPlanDetailsQuery, type Bundle } from "@/redux/api/packingListPlanApi";
 import {
   Loader2,
   Package,
@@ -9,7 +9,7 @@ import {
   FileText
 } from "lucide-react";
 import InvalidRequestView from "@/components/InvalidRequestView";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 export default function PackingListPlanDetails() {
   const { packingListPlanId } = useParams<{ packingListPlanId: string }>();
@@ -38,7 +38,7 @@ export default function PackingListPlanDetails() {
     );
   }
 
-  const { packingListPlan, packingLists, summary } = data;
+  const { packingListPlan, packingLists, summary, bundles = [] } = data;
 
   // Render nicer labels for standard truck types
   const formatTruckType = (type: string) => {
@@ -54,8 +54,8 @@ export default function PackingListPlanDetails() {
 
   return (
     <div className="min-h-screen bg-slate-50 py-4 sm:py-8 px-3 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto w-full space-y-4 sm:space-y-6">
-        
+      <div className="max-w-4xl mx-auto w-full space-y-6 sm:space-y-8">
+
         {/* Header Block */}
         <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
@@ -72,25 +72,6 @@ export default function PackingListPlanDetails() {
             {packingListPlan.status || "N/A"}
           </div>
         </div>
-
-        {/* Warnings Section (if any) */}
-        {/*
-        summary.warnings && summary.warnings.length > 0 && (
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl shadow-xs">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-              <div>
-                <h3 className="text-sm font-semibold text-amber-800">Plan Warnings</h3>
-                <ul className="mt-1 list-disc list-inside text-xs text-amber-700 space-y-1">
-                  {summary.warnings.map((warning, idx) => (
-                    <li key={idx}>{warning}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )
-        */}
 
         {/* Main Summary Info Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
@@ -124,6 +105,28 @@ export default function PackingListPlanDetails() {
             </span>
           </div>
         </div>
+
+        {/* Global Warnings Section (Commented out per request)
+        {summary.warnings && summary.warnings.length > 0 && (
+          <div className="bg-amber-50/80 backdrop-blur-xs border-l-4 border-amber-500 p-4 rounded-r-2xl shadow-xs border border-amber-100/50">
+            <div className="flex items-start gap-3">
+              <div className="p-1 bg-amber-100 text-amber-800 rounded-lg shrink-0">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-bold text-amber-900">Plan Alerts & Warnings</h3>
+                <ul className="mt-1.5 list-disc list-inside text-xs text-amber-800 space-y-1 max-h-48 overflow-y-auto pr-2">
+                  {summary.warnings.map((warning, idx) => (
+                    <li key={idx} className="truncate">{warning}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+        */}
 
         {/* Truck Summary Card */}
         {summary.truckSummary && (
@@ -170,7 +173,7 @@ export default function PackingListPlanDetails() {
         <div className="space-y-3 sm:space-y-4">
           <div className="flex items-center justify-between px-1">
             <h2 className="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
-              <Package className="h-5 w-5 text-blue-500" />
+              <FileText className="h-5 w-5 text-blue-500" />
               Packing Lists ({packingLists.length})
             </h2>
           </div>
@@ -221,9 +224,112 @@ export default function PackingListPlanDetails() {
               </div>
             ))}
           </div>
-
         </div>
+
+        {/* Bundles Table Section */}
+        <div className="space-y-3 sm:space-y-4">
+          <div className="flex items-center justify-between px-1">
+            <h2 className="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
+              <Package className="h-5 w-5 text-blue-500" />
+              Bundles Breakdown ({bundles.length})
+            </h2>
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-center w-16">Seq</th>
+                  <th className="px-4 py-3">Bundle No</th>
+                  <th className="px-4 py-3">Type</th>
+                  <th className="px-4 py-3 text-right">Qty</th>
+                  <th className="px-4 py-3 text-right">Weight (Lbs)</th>
+                  <th className="px-4 py-3 text-right">Max Length</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+                {bundles.map((bundle: Bundle) => {
+                  return (
+                    <tr key={bundle._id} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="px-4 py-3 text-center font-bold text-slate-400">{bundle.loadSequence || "-"}</td>
+                      <td className="px-4 py-3 font-mono font-bold text-slate-900">{bundle.bundleNo}</td>
+                      <td className="px-4 py-3 capitalize">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                          {bundle.bundleType}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-right font-medium">{bundle.totalQty.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-right font-semibold">
+                        {bundle.totalWeight.toLocaleString()} lbs
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        {bundle.maxLengthFeet ? `${Number(bundle.maxLengthFeet.toFixed(2))} ft` : "-"}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${bundle.status === "assigned_to_truck"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200/50"
+                            : "bg-slate-50 text-slate-600 border border-slate-200"
+                          }`}>
+                          {bundle.status?.replace(/_/g, " ") || "Pending"}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Stacked Cards Layout */}
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 md:hidden">
+            {bundles.map((bundle: Bundle) => {
+              return (
+                <div key={bundle._id} className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3">
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">Seq {bundle.loadSequence || "-"}</span>
+                      <span className="font-mono font-bold text-slate-900 text-sm">{bundle.bundleNo}</span>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide ${bundle.status === "assigned_to_truck"
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : "bg-slate-50 text-slate-600 border border-slate-200"
+                      }`}>
+                      {bundle.status?.replace(/_/g, " ") || "Pending"}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-y-2 gap-x-4 pt-1 text-xs">
+                    <div className="flex flex-col">
+                      <span className="text-slate-400 uppercase tracking-wider text-[9px] mb-0.5">Type</span>
+                      <span className="font-medium text-slate-800 capitalize">{bundle.bundleType}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-slate-400 uppercase tracking-wider text-[9px] mb-0.5">Qty</span>
+                      <span className="font-bold text-slate-800">{bundle.totalQty.toLocaleString()}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-slate-400 uppercase tracking-wider text-[9px] mb-0.5">Weight</span>
+                      <span className="font-bold text-slate-800">
+                        {bundle.totalWeight.toLocaleString()} lbs
+                      </span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-slate-400 uppercase tracking-wider text-[9px] mb-0.5">Max Length</span>
+                      <span className="font-medium text-slate-800">
+                        {bundle.maxLengthFeet ? `${Number(bundle.maxLengthFeet.toFixed(2))} ft` : "-"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
     </div>
   );
 }
+

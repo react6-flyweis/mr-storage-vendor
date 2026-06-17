@@ -31,10 +31,25 @@ export interface PackingListPlanSummary {
   warnings: string[];
 }
 
+export interface Bundle {
+  _id: string;
+  bundleNo: string;
+  bundleType: string;
+  title: string;
+  totalQty: number;
+  totalWeight: number;
+  maxLengthFeet?: number;
+  packingListId?: string;
+  status?: string;
+  loadSequence?: number;
+  warnings?: string[];
+}
+
 export interface PackingListPlanResponse {
   packingListPlan: PackingListPlan;
   packingLists: PackingList[];
   summary: PackingListPlanSummary;
+  bundles?: Bundle[];
 }
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
