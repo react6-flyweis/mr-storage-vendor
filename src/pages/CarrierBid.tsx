@@ -5,7 +5,7 @@ import InvalidRequestView from "@/components/InvalidRequestView";
 import CarrierRequestOverview from "@/components/CarrierRequestOverview";
 import CarrierSubmissionForm from "@/components/CarrierSubmissionForm";
 import CarrierSuccessView from "@/components/CarrierSuccessView";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 export default function CarrierBid() {
   const { token } = useParams<{ token: string }>();
