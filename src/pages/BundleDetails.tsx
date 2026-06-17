@@ -12,7 +12,7 @@ import {
   CornerDownRight
 } from "lucide-react";
 import InvalidRequestView from "@/components/InvalidRequestView";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 export default function BundleDetails() {
   const { bundleId } = useParams<{ bundleId: string }>();

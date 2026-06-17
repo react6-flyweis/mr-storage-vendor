@@ -29,16 +29,18 @@ export default function ProposalSubmissionForm() {
 
   if (!details) return null;
 
-  const isAlreadySubmitted = details.status !== "sent" || details.submittedAt !== null;
-
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) return;
-    if (!quoteValue || isNaN(Number(quoteValue)) || Number(quoteValue) <= 0) {
-      setSubmitError("Please enter a valid quote value greater than 0.");
-      return;
+
+    if (details.requiresQuoteValue) {
+      if (!quoteValue || isNaN(Number(quoteValue)) || Number(quoteValue) <= 0) {
+        setSubmitError("Please enter a valid quote value greater than 0.");
+        return;
+      }
     }
-    if (!uploadedFileUrl && !isAlreadySubmitted) {
+
+    if (!uploadedFileUrl && !details.submittedFileUrl) {
       setSubmitError("Please upload your proposal document.");
       return;
     }
@@ -49,7 +51,7 @@ export default function ProposalSubmissionForm() {
       // Submit request using pre-uploaded file details
       await submitVendorUpload({
         token,
-        quoteValue: Number(quoteValue),
+        quoteValue: details.requiresQuoteValue ? Number(quoteValue) : 0,
         submittedFileUrl: uploadedFileUrl || details.submittedFileUrl || "",
         submittedFileName: uploadedFileName || details.submittedFileName || "",
       }).unwrap();
@@ -62,11 +64,13 @@ export default function ProposalSubmissionForm() {
 
   return (
     <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-xl border border-slate-100 relative">
-      <h3 className="text-lg font-bold text-slate-800 mb-6">Proposal Submission</h3>
+      <h3 className="text-lg font-bold text-slate-800 mb-6">
+        {details.isResubmit ? "Submit Revised Proposal" : "Proposal Submission"}
+      </h3>
       <form onSubmit={handleFormSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-2">
-            Total Quote Value (USD)
+            {details.isResubmit ? "Updated Total Quote Value (USD)" : "Total Quote Value (USD)"}
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">

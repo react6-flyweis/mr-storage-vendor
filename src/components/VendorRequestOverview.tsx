@@ -45,6 +45,18 @@ export default function VendorRequestOverview() {
               <p className="text-sm font-semibold text-slate-800">{details.jobId}</p>
             </div>
           </div>
+
+          {details.isResubmit && details.submissionHistoryCount !== undefined && details.submissionHistoryCount > 0 && (
+            <div className="flex gap-3 items-start">
+              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+                <span className="text-xs font-bold font-mono">#{details.submissionHistoryCount}</span>
+              </div>
+              <div>
+                <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Previous Submissions</p>
+                <p className="text-sm font-semibold text-slate-800">{details.submissionHistoryCount}</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
