@@ -1,6 +1,30 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { ApiResponse } from "./apiResponse";
 
+export interface PackingList {
+  _id: string;
+  packingListNo: string;
+  truckType: string;
+  totalWeight: number;
+}
+
+export interface PackingListPlan {
+  _id: string;
+  status: string;
+  totalPackingLists: number;
+  totalBundles: number;
+  totalWeight: number;
+}
+
+export interface Bundle {
+  _id: string;
+  bundleNo: string;
+  bundleType: string;
+  totalQty: number;
+  totalWeight: number;
+  maxLengthFeet?: number;
+}
+
 export interface FreightBidDetails {
   bidId: string;
   status: string;
@@ -15,6 +39,17 @@ export interface FreightBidDetails {
   quotedAmount: number | null;
   carrierNotes: string;
   submittedAt?: string | null;
+  loadWeight?: number;
+  dimensions?: {
+    lengthFeet: number;
+    widthFeet: number;
+    heightFeet: number;
+  };
+  materialType?: string;
+  packageCount?: number;
+  packingListPlan?: PackingListPlan | null;
+  packingLists?: PackingList[] | null;
+  bundles?: Bundle[] | null;
 }
 
 export interface SubmitFreightBidRequest {
