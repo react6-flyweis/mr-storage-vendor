@@ -61,7 +61,9 @@ export default function CarrierSubmissionForm() {
   return (
     <div className="lg:col-span-1 bg-white rounded-3xl p-8 shadow-xl border border-slate-100 relative flex flex-col gap-6">
       <div>
-        <h3 className="text-lg font-bold text-slate-800 mb-4">Submit Freight Bid</h3>
+        <h3 className="text-lg font-bold text-slate-800 mb-4">
+          {details.status === "resubmit_requested" ? "Submit Revised Freight Bid" : "Submit Freight Bid"}
+        </h3>
         <div className={`p-4 rounded-2xl flex flex-col gap-2 ${isExpired ? 'bg-red-50 border border-red-100 text-red-800' : 'bg-amber-50 border border-amber-100 text-amber-800'}`}>
           <div className="flex items-center gap-2">
             {isExpired ? <Clock className="h-5 w-5 text-red-600" /> : <Calendar className="h-5 w-5 text-amber-600" />}

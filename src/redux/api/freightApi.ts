@@ -52,6 +52,10 @@ export interface FreightBidDetails {
   packingListPlan?: PackingListPlan | null;
   packingLists?: PackingList[] | null;
   bundles?: Bundle[] | null;
+  resubmitNote?: string;
+  plantNote?: string;
+  resubmitRequestedAt?: string | null;
+  resubmitCount?: number;
 }
 
 export interface SubmitFreightBidRequest {
