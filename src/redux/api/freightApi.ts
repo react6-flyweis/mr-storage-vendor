@@ -23,6 +23,8 @@ export interface Bundle {
   totalQty: number;
   totalWeight: number;
   maxLengthFeet?: number;
+  packingListId?: string;
+  loadSequence?: number;
 }
 
 export interface FreightBidDetails {

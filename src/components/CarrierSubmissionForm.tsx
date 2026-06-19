@@ -4,7 +4,7 @@ import { useGetFreightBidQuery, useSubmitFreightBidMutation } from "@/redux/api/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, Loader2, DollarSign, FileText } from "lucide-react";
+import { AlertCircle, Loader2, DollarSign, FileText, Calendar, Clock } from "lucide-react";
 
 export default function CarrierSubmissionForm() {
   const { token } = useParams<{ token: string }>();
@@ -21,6 +21,13 @@ export default function CarrierSubmissionForm() {
   if (!details) return null;
 
   const isExpired = new Date() > new Date(details.bidDeadline);
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,8 +59,26 @@ export default function CarrierSubmissionForm() {
   };
 
   return (
-    <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-xl border border-slate-100 relative">
-      <h3 className="text-lg font-bold text-slate-800 mb-6">Submit Freight Bid</h3>
+    <div className="lg:col-span-1 bg-white rounded-3xl p-8 shadow-xl border border-slate-100 relative flex flex-col gap-6">
+      <div>
+        <h3 className="text-lg font-bold text-slate-800 mb-4">Submit Freight Bid</h3>
+        <div className={`p-4 rounded-2xl flex flex-col gap-2 ${isExpired ? 'bg-red-50 border border-red-100 text-red-800' : 'bg-amber-50 border border-amber-100 text-amber-800'}`}>
+          <div className="flex items-center gap-2">
+            {isExpired ? <Clock className="h-5 w-5 text-red-600" /> : <Calendar className="h-5 w-5 text-amber-600" />}
+            <span className="font-bold text-sm">
+              {isExpired ? "Bidding Closed" : "Bid Deadline"}
+            </span>
+          </div>
+          <p className="text-xs font-semibold leading-relaxed">
+            {formatDate(details.bidDeadline)}
+          </p>
+          {!isExpired && (
+            <p className="text-[11px] text-amber-600 font-medium mt-0.5">
+              Submit your rate before the deadline above.
+            </p>
+          )}
+        </div>
+      </div>
       <form onSubmit={handleFormSubmit} className="space-y-6">
         <div>
           <Label className="block text-sm font-semibold text-slate-700 mb-2">
