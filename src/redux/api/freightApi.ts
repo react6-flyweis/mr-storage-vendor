@@ -56,6 +56,8 @@ export interface FreightBidDetails {
   plantNote?: string;
   resubmitRequestedAt?: string | null;
   resubmitCount?: number;
+  priorQuotedAmount?: number;
+  requestedBidAmount?: number;
 }
 
 export interface SubmitFreightBidRequest {

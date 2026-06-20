@@ -70,8 +70,24 @@ export default function CarrierBid() {
                   "{details.resubmitNote || details.plantNote}"
                 </p>
               )}
+              {(details.priorQuotedAmount !== undefined || details.requestedBidAmount !== undefined) && (
+                <div className="mt-3 flex flex-wrap gap-3">
+                  {details.priorQuotedAmount !== undefined && (
+                    <div className="bg-amber-150/50 px-3.5 py-2 rounded-xl border border-amber-200/60 text-amber-900">
+                      <span className="text-[10px] text-amber-800/80 block font-bold uppercase tracking-wider">Prior Bid Amount</span>
+                      <span className="text-sm font-extrabold">${details.priorQuotedAmount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  {details.requestedBidAmount !== undefined && (
+                    <div className="bg-amber-150/50 px-3.5 py-2 rounded-xl border border-amber-200/60 text-amber-900">
+                      <span className="text-[10px] text-amber-800/80 block font-bold uppercase tracking-wider">Requested Bid Amount</span>
+                      <span className="text-sm font-extrabold">${details.requestedBidAmount.toLocaleString()}</span>
+                    </div>
+                  )}
+                </div>
+              )}
               {details.resubmitRequestedAt && (
-                <p className="mt-3 text-xs text-amber-700">
+                <p className="mt-3 text-[10px] text-amber-700/80 font-medium">
                   Requested at: {new Date(details.resubmitRequestedAt).toLocaleString()}
                 </p>
               )}

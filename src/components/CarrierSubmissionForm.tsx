@@ -83,9 +83,25 @@ export default function CarrierSubmissionForm() {
       </div>
       <form onSubmit={handleFormSubmit} className="space-y-6">
         <div>
-          <Label className="block text-sm font-semibold text-slate-700 mb-2">
-            Quoted Freight Amount (USD)
-          </Label>
+          <div className="flex flex-wrap justify-between items-baseline gap-2 mb-2">
+            <Label className="block text-sm font-semibold text-slate-700">
+              Quoted Freight Amount (USD)
+            </Label>
+            {details.status === "resubmit_requested" && (
+              <div className="flex gap-2.5 text-xs font-medium text-slate-500">
+                {details.priorQuotedAmount !== undefined && (
+                  <span>
+                    Prior: <span className="font-semibold text-slate-700">${details.priorQuotedAmount.toLocaleString()}</span>
+                  </span>
+                )}
+                {details.requestedBidAmount !== undefined && (
+                  <span>
+                    Requested: <span className="font-semibold text-blue-600">${details.requestedBidAmount.toLocaleString()}</span>
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
               <DollarSign className="h-5 w-5" />
