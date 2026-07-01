@@ -2,14 +2,19 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { routes } from "./routes";
 import { Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
+import * as Sentry from "@sentry/react";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-const router = createBrowserRouter(routes);
+const sentryCreateBrowserRouter = Sentry.wrapCreateBrowserRouterV7(createBrowserRouter);
+const router = sentryCreateBrowserRouter(routes);
 
 function App() {
   return (
-    <Suspense fallback={<LoadingScreen />}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingScreen />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 
