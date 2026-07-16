@@ -1,4 +1,4 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface InvalidRequestViewProps {
@@ -13,17 +13,38 @@ export default function InvalidRequestView({
   description = "This vendor upload link is invalid, expired, or has already been deactivated.",
 }: InvalidRequestViewProps) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center">
-        <div className="mx-auto w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-6">
-          <AlertCircle className="h-8 w-8" />
+    <div className="flex items-center justify-center min-h-screen bg-background text-foreground font-sans p-6">
+      {/* Decorative background gradients matching theme */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      
+      <div className="relative w-full max-w-md p-8 bg-card border border-border rounded-xl shadow-md space-y-6 text-center">
+        <div className="flex flex-col items-center space-y-3">
+          <div className="p-3 bg-primary/10 rounded-full text-primary">
+            <AlertCircle className="size-10" />
+          </div>
+          
+          <h1 className="text-2xl font-bold tracking-tight">
+            {title}
+          </h1>
+          
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {description}
+          </p>
         </div>
-        <h1 className="text-2xl font-bold text-slate-800 mb-2">{title}</h1>
-        <p className="text-slate-500 mb-6 text-sm">{description}</p>
-        <Button onClick={onRetry} variant="outline" className="w-full">
-          Retry Connection
-        </Button>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-2.5 pt-2">
+          <Button
+            onClick={onRetry}
+            variant="default"
+            className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-5 cursor-pointer flex items-center justify-center gap-2"
+          >
+            <RefreshCw className="size-4" />
+            Retry Connection
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
+

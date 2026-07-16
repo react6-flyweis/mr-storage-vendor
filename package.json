@@ -16,6 +16,8 @@
     "@fullcalendar/timegrid": "^6.1.20",
     "@hookform/resolvers": "^5.4.0",
     "@reduxjs/toolkit": "^2.11.2",
+    "@sentry/react": "^10.62.0",
+    "@sentry/vite-plugin": "^5.3.0",
     "@tailwindcss/vite": "^4.1.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
