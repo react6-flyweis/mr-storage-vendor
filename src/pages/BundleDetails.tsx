@@ -96,7 +96,7 @@ export default function BundleDetails() {
           <div className="p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
             <div className="bg-slate-50/70 p-3 sm:p-4 rounded-xl border border-slate-100 flex flex-col justify-between min-w-0">
               <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Total Qty</span>
-              <span className="text-base sm:text-xl font-bold text-slate-800 truncate">{bundle.totalQty} items</span>
+              <span className="text-base sm:text-xl font-bold text-slate-800 truncate">{bundle.totalQty.toFixed(2)} items</span>
             </div>
 
             <div className="bg-slate-50/70 p-3 sm:p-4 rounded-xl border border-slate-100 flex flex-col justify-between min-w-0">
@@ -104,7 +104,7 @@ export default function BundleDetails() {
                 <Scale className="h-3.5 w-3.5 shrink-0" />
                 <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Total Weight</span>
               </div>
-              <span className="text-base sm:text-xl font-bold text-slate-800 truncate">{bundle.totalWeight.toLocaleString()} lbs</span>
+              <span className="text-base sm:text-xl font-bold text-slate-800 truncate">{bundle.totalWeight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} lbs</span>
             </div>
 
             <div className="bg-slate-50/70 p-3 sm:p-4 rounded-xl border border-slate-100 flex flex-col justify-between min-w-0">
@@ -112,7 +112,7 @@ export default function BundleDetails() {
                 <Maximize2 className="h-3.5 w-3.5 shrink-0" />
                 <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Max Length</span>
               </div>
-              <span className="text-base sm:text-xl font-bold text-slate-800 truncate">{bundle.maxLengthFeet}'</span>
+              <span className="text-base sm:text-xl font-bold text-slate-800 truncate">{bundle.maxLengthFeet.toFixed(2)}'</span>
             </div>
 
             <div className="bg-slate-50/70 p-3 sm:p-4 rounded-xl border border-slate-100 flex flex-col justify-between min-w-0">
@@ -180,9 +180,9 @@ export default function BundleDetails() {
                   <tr key={item._id} className="hover:bg-slate-50/55 transition-colors">
                     <td className="px-6 py-4 font-mono font-bold text-slate-900">{item.partCode}</td>
                     <td className="px-6 py-4">{item.description}</td>
-                    <td className="px-6 py-4 text-right font-semibold">{item.qty}</td>
+                    <td className="px-6 py-4 text-right font-semibold">{item.qty.toFixed(2)}</td>
                     <td className="px-6 py-4 text-right">{item.lengthFeet.toFixed(2)}'</td>
-                    <td className="px-6 py-4 text-right">{item.weight.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-right">{item.weight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {item.markIds && item.markIds.length > 0 ? (
@@ -212,7 +212,7 @@ export default function BundleDetails() {
                     <p className="text-xs text-slate-500 mt-0.5 break-words">{item.description}</p>
                   </div>
                   <div className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-lg text-xs font-bold shrink-0">
-                    Qty: {item.qty}
+                    Qty: {item.qty.toFixed(2)}
                   </div>
                 </div>
 
@@ -223,7 +223,7 @@ export default function BundleDetails() {
                   </div>
                   <div>
                     <span className="text-slate-400 uppercase tracking-wider text-[10px] block">Weight</span>
-                    <span className="font-semibold text-slate-700">{item.weight.toLocaleString()} lbs</span>
+                    <span className="font-semibold text-slate-700">{item.weight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} lbs</span>
                   </div>
                 </div>
 
